@@ -38,14 +38,14 @@ rule spaceranger_count:
     params:
         id = "{sample}",
         sample = "{sample}",
-        transcriptome = "/path/to/refdata"
+        transcriptome = config.transcriptome
     threads: 8
     shell:
         """
         module load spaceranger/4.0.1
         spaceranger count \
             --id={params.id} \
-            --transcriptome={params.transcriptome} \
+            --transcriptome={config.transcriptome} \
             --fastqs={input.fastqs} \
             --sample={params.sample} \
             --image={input.image} \
