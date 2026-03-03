@@ -12,7 +12,7 @@ This pipeline processes 10x Genomics Visium and Xenium spatial tranascriptomics 
 ### Running the Pipeline
 1. Clone this repository and move into the directory: 
 ```
-git clone https://github.com/NIH-CARD/card-unified-workflow/SpatialTranscriptomics.git
+git clone x
 cd SpatialTranscriptomics
 ```
 
