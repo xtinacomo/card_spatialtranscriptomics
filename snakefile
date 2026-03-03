@@ -51,7 +51,7 @@ rule spaceranger_count:
             --image={input.image} \
             --slide={input.slide} \
             --localcores={threads} \
-            --probe-set={params.probeset}
+            --probe-set={config.probeset}
         """
 
 # Xenium CSV processing
