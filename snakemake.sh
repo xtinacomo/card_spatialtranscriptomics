@@ -18,17 +18,17 @@ fi
 
 # Pull the containers
 mkdir -p envs
-apptainer pull --disable-cache envs/snapatac2.sif oras://quay.io/adamcatchingdti/snapatac2
-apptainer pull --disable-cache envs/single_cell_gpu.sif oras://quay.io/adamcatchingdti/single_cell_gpu:0.8
-apptainer pull --disable-cache envs/decoupler.sif oras://quay.io/adamcatchingdti/decoupler.sif:0.9
+#apptainer pull --disable-cache envs/snapatac2.sif oras://quay.io/adamcatchingdti/snapatac2
+#apptainer pull --disable-cache envs/single_cell_gpu.sif oras://quay.io/adamcatchingdti/single_cell_gpu:0.8
+#apptainer pull --disable-cache envs/decoupler.sif oras://quay.io/adamcatchingdti/decoupler.sif:0.9
 
-apptainer pull --disable-cache envs/scenicplus.sif docker://litd/docker-scenicplus:latest 
+#apptainer pull --disable-cache envs/scenicplus.sif docker://litd/docker-scenicplus:latest 
 
 # Load singularity
 module load singularity
 
 # Bind external directories on Biowulf
-. /usr/local/current/singularity/app_conf/sing_binds
+#. /usr/local/current/singularity/app_conf/sing_binds
 
 # Make sure script folder permissions are correct
 chmod +x scripts/*.sh
