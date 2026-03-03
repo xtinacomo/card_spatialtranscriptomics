@@ -42,6 +42,7 @@ rule spaceranger_count:
     threads: 8
     shell:
         """
+        module load spaceranger/4.0.1
         spaceranger count \
             --id={params.id} \
             --transcriptome={params.transcriptome} \
@@ -49,7 +50,8 @@ rule spaceranger_count:
             --sample={params.sample} \
             --image={input.image} \
             --slide={input.slide} \
-            --localcores={threads}
+            --localcores={threads} \
+            --probe-set={params.probeset}
         """
 
 # Xenium CSV processing
