@@ -1,8 +1,8 @@
 #transcriptome 
-transcriptome: /data/comocn/card_spatialtranscriptomics/refdata-gex-GRCh38-2020-A
+transcriptome: /data/comocn/card_spatialtranscriptomics/transcriptome/refdata-gex-GRCh38-2024-A.tar.gz
 
 #probeset
-probeset: /data/comocn/card_spatialtranscriptomics/refdata-gex-GRCh38-2020-A/probesets/10x_probeset_v1.0.csv
+probeset: /data/comocn/card_spatialtranscriptomics/probesets/Visium_Human_Transcriptome_Probe_Set_v2.1.0_GRCh38-2024-A.csv
 
 #metadata
 metadata: /data/comocn/card_spatialtranscriptomics/metadata.csv
