@@ -11,11 +11,9 @@ work_dir = os.getcwd()
 
 # Load sample metadata
 samples_df = pd.read_csv('inputs/samples.csv')
-xenium_samples = samples_df[samples_df["platform"] == "xenium"]["sample"].tolist()
-visium_samples = samples_df[samples_df["platform"] == "visium"]["sample"].tolist()
 
-sample_platform_dict = samples_df.set_index("sample")["platform"].to_dict()
-
+SAMPLES = samples_df['sample'].tolist()
+print(f"SAMPLES: {SAMPLES}")
 """========================================================================="""
 """                                  Workflow                               """
 """========================================================================="""
@@ -23,32 +21,28 @@ sample_platform_dict = samples_df.set_index("sample")["platform"].to_dict()
 # Final targets for both platforms
 rule all:
     input:
-        expand("results/{sample}/filtered_feature_bc_matrix.h5", sample=visium_samples) +
-        expand("results/{sample}/xenium_processed.tsv", sample=xenium_samples)
+        expand("results/{sample}/filtered_feature_bc_matrix.h5", sample=SAMPLES)
 
 # SpaceRanger count for Visium
 rule spaceranger_count:
     input:
-        fastqs = lambda wildcards: os.path.join(data_dir, wildcards.sample, "fastq"),
+        fastqs = lambda wildcards: os.path.join(data_dir, wildcards.sample, "fastqs.tar"),
         image = lambda wildcards: os.path.join(data_dir, wildcards.sample, "image.tif"),
         slide = lambda wildcards: os.path.join(data_dir, wildcards.sample, f"{wildcards.sample}.json")
     output:
-        "results/{sample}/outs/filtered_feature_bc_matrix.h5"
-    params:
-        id = "{sample}",
-        sample = "{sample}",
+        "results/{sample}/filtered_feature_bc_matrix.h5"
     threads: 8
     shell:
         """
         module load spaceranger/4.0.1
         spaceranger count \
-            --id={params.id} \
+            --id=results/{wildcards.sample} \
             --transcriptome={config.transcriptome} \
-            --fastqs={config.fastqs} \
-            --sample={params.sample} \
+            --fastqs={input.fastqs} \
             --image={input.image} \
             --slide={input.slide} \
-            --localcores={params.threads} \
+            --area= \
+            --create-bam = F \
             --probe-set={config.probeset}
         """
 

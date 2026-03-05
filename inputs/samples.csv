@@ -1,2 +1,2 @@
-sample,platform,condition
-CytAssist_FreshFrozen_Mouse_Brain_Rep1,Visium,control
+sample,platform,condition,slide_id,area
+CytAssist_FreshFrozen_Human_Breast_Cancer,Visium,control,

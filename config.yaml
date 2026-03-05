@@ -2,4 +2,8 @@
 transcriptome: /fdb/spaceranger/refdata-spaceranger-2024-A/refdata-gex-GRCh38-2024-A
 
 #probeset
-probeset: /data/comocn/card_spatialtranscriptomics/probesets/Visium_Human_Transcriptome_Probe_Set_v2.1.0_GRCh38-2024-A.csv
+probeset: /data/comocn/card_spatialtranscriptomics/probesets/CytAssist_Fresh_Frozen_Human_Breast_Cancer_probe_set.csv
+
+#create bam
+create_bam : False
+
