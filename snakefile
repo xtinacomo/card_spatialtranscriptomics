@@ -8,7 +8,7 @@ import os
 # File locations
 data_dir = '/data/'
 work_dir = os.getcwd()
-meta_data = os.path.join(work_dir, 'input/samples.csv')
+meta_data = os.path.join(work_dir, 'inputs/samples.csv')
 
 # Load sample metadata
 samples_df = pd.read_csv(meta_data)
