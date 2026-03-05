@@ -5,4 +5,8 @@ snakemake_profile
 .snakemake
 
 #example data
-data/CytA*
+data/CytAssist_FreshFrozen_Mouse_Brain_Rep1_fastqs.tar
+data/CytAssist_FreshFrozen_Mouse_Brain_Rep1_fastqs.tar.1
+data/CytAssist_FreshFrozen_Mouse_Brain_Rep1_image.tif 
+data/CytAssist_FreshFrozen_Mouse_Brain_Rep1_probe_set.csv
+data/CytAssist_FreshFrozen_Mouse_Brain_Rep1_tissue_image.btf
