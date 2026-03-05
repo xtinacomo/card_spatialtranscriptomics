@@ -31,7 +31,7 @@ rule all:
 rule spaceranger_count:
     input:
         fastqs = lambda wildcards: os.path.join(data_dir, wildcards.sample, "fastq"),
-        image = lambda wildcards: os.path.join(data_dir, wildcards.sample, "tissue_hires_image.png"),
+        image = lambda wildcards: os.path.join(data_dir, wildcards.sample, "image.tif"),
         slide = lambda wildcards: os.path.join(data_dir, wildcards.sample, f"{wildcards.sample}.json")
     output:
         "results/{sample}/outs/filtered_feature_bc_matrix.h5"

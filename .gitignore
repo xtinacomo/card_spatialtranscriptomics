@@ -1,0 +1,8 @@
+# Folders and files to not track
+snakemake_profile
+
+# Snakemake logs
+.snakemake
+
+#example data
+data/CytA*
