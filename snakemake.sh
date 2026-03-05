@@ -47,4 +47,3 @@ snakemake \
   --reason \
   --latency-wait 60 \
   --rerun-incomplete
-
