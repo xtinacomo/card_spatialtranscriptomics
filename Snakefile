@@ -8,10 +8,9 @@ import os
 # File locations
 data_dir = '/data/'
 work_dir = os.getcwd()
-meta_data = os.path.join(work_dir, 'inputs/samples.csv')
 
 # Load sample metadata
-samples_df = pd.read_csv(meta_data)
+samples_df = pd.read_csv('inputs/samples.csv')
 xenium_samples = samples_df[samples_df["platform"] == "xenium"]["sample"].tolist()
 visium_samples = samples_df[samples_df["platform"] == "visium"]["sample"].tolist()
 
@@ -24,7 +23,7 @@ sample_platform_dict = samples_df.set_index("sample")["platform"].to_dict()
 # Final targets for both platforms
 rule all:
     input:
-        expand("results/{sample}/outs/filtered_feature_bc_matrix.h5", sample=visium_samples) +
+        expand("results/{sample}/filtered_feature_bc_matrix.h5", sample=visium_samples) +
         expand("results/{sample}/xenium_processed.tsv", sample=xenium_samples)
 
 # SpaceRanger count for Visium
@@ -38,7 +37,6 @@ rule spaceranger_count:
     params:
         id = "{sample}",
         sample = "{sample}",
-        transcriptome = config.transcriptome
     threads: 8
     shell:
         """
@@ -46,24 +44,24 @@ rule spaceranger_count:
         spaceranger count \
             --id={params.id} \
             --transcriptome={config.transcriptome} \
-            --fastqs={input.fastqs} \
+            --fastqs={config.fastqs} \
             --sample={params.sample} \
             --image={input.image} \
             --slide={input.slide} \
-            --localcores={threads} \
+            --localcores={params.threads} \
             --probe-set={config.probeset}
         """
 
 # Xenium CSV processing
-rule xenium_process:
-    input:
-        matrix = lambda wildcards: os.path.join(data_dir, wildcards.sample, "cell_feature_matrix.csv")
-    output:
-        processed = "results/{sample}/xenium_processed.tsv"
-    shell:
-        """
-        awk -F',' 'BEGIN{{OFS="\\t"}} NR==1{{print $0}} NR>1{{print $0}}' {input.matrix} > {output.processed}
-        """
+#rule xenium_process:
+#    input:
+#        matrix = lambda wildcards: os.path.join(data_dir, wildcards.sample, "cell_feature_matrix.csv")
+#    output:
+#        processed = "results/{sample}/xenium_processed.tsv"
+#    shell:
+#        """
+#        awk -F',' 'BEGIN{{OFS="\\t"}} NR==1{{print $0}} NR>1{{print $0}}' {input.matrix} > {output.processed}
+#        """
 
 rule seurat_process:
     input:

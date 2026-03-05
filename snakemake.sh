@@ -31,7 +31,7 @@ module load singularity
 #. /usr/local/current/singularity/app_conf/sing_binds
 
 # Make sure script folder permissions are correct
-chmod +x scripts/*.sh
+#chmod +x scripts/*.sh
 
 # Create logs directory if it doesn't exist
 mkdir -p logs
@@ -40,7 +40,7 @@ mkdir -p logs
 snakemake \
   --snakefile Snakefile \
   --profile snakemake_profile \
-  --configfile config/config.yaml \
+  --configfile config.yaml \
   --use-singularity \
   --cores all \
   --printshellcmds \
