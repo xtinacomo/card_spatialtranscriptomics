@@ -41,7 +41,7 @@ rule spaceranger_count:
             --fastqs={input.fastqs} \
             --image={input.image} \
             --slide={input.slide} \
-            --area= {\
+            --area= {}\
             --create-bam = F \
             --probe-set={config.probeset}
         """
