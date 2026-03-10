@@ -14,3 +14,6 @@ probesets/Visium*
 data/V1_Adult*
 
 results.V1*
+results/*
+
+__V1_Adult*
