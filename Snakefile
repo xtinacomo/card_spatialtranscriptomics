@@ -6,7 +6,8 @@ import os
 """========================================================================="""
 
 # File locations
-data_dir = '/data/V1_Adult_Mouse_Brain_fastqs'
+data_dir = 'data/'
+results_dir = 'results/'
 
 # Load sample metadata
 samples_df = pd.read_csv('inputs/samples.csv')
@@ -27,34 +28,39 @@ print(f"AREA_DICT: {AREA_DICT}")
 # Final targets for both platforms
 rule all:
     input:
-        expand("results/{sample}/filtered_feature_bc_matrix.h5", sample=SAMPLES)
+        expand("results/{sample}/outs/filtered_feature_bc_matrix.h5", sample=SAMPLES)
 
 # SpaceRanger count for Visium
 rule spaceranger_count:
     input:
-        fastqs = lambda wc: os.path.join(data_dir, f"{wc.sample}_fastq.gz"),
-        image  = lambda wc: os.path.join(data_dir, f"{wc.sample}_image.tif")
+        fastqs = lambda wc: os.path.join(data_dir, f"{wc.sample}_fastqs"),
+        image  = lambda wc: os.path.join(data_dir, f"{wc.sample}_fastqs", f"{wc.sample}_image.tif")
     output:
-        "results/{sample}/filtered_feature_bc_matrix.h5"
+        "results/{sample}/outs/filtered_feature_bc_matrix.h5"
     params:
         slide = lambda wc: SLIDE_DICT[wc.sample],
-        area  = lambda wc: AREA_DICT[wc.sample]
-    threads: 8
+        area  = lambda wc: AREA_DICT[wc.sample],
+        transcriptome= config["transcriptome"],
+        create_bam   = config["create_bam"],
+        probeset     = config["probeset"]
+    threads: 16
+    resources:
+        mem_mb=128000
     shell:
         """
         module load spaceranger/4.0.1
-        
-        mkdir -p results/{wildcards.sample}/fastqs
+
+        mkdir -p results
 
         spaceranger count \
-            --id=results/{wildcards.sample} \
-            --transcriptome={config.transcriptome} \
+            --id={wildcards.sample} \
+            --output-dir=results.{wildcards.sample} \
+            --transcriptome={params.transcriptome} \
             --fastqs={input.fastqs} \
             --image={input.image} \
             --slide={params.slide} \
-            --area={params.area}\
-            --create-bam = {config.create_bam} \
-            --probe-set={config.probeset}
+            --area={params.area} \
+            --create-bam={params.create_bam}
         """
 
 # Xenium CSV processing

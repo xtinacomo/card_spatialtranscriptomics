@@ -1,11 +1,11 @@
 #transcriptome 
-transcriptome: /fdb/spaceranger/refdata-spaceranger-2020-A/refdata-gex-mm10-2020-A
+transcriptome: "/fdb/spaceranger/refdata-spaceranger-2020-A/refdata-gex-mm10-2020-A"
 
 #probeset
-probeset: /data/comocn/card_spatialtranscriptomics/probesets/CytAssist_FreshFrozen_Mouse_Brain_Rep1_probe_set.csv
+probeset: "/data/comocn/card_spatialtranscriptomics/probesets/CytAssist_FreshFrozen_Mouse_Brain_Rep1_probe_set.csv"
 
 #create bam
-create_bam: false
+create_bam: "false"
 
 #following data from this link
 #https://www.10xgenomics.com/support/software/space-ranger/latest/tutorials/count-ff-tutorial
