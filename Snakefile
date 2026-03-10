@@ -6,7 +6,7 @@ import os
 """========================================================================="""
 
 # File locations
-data_dir = '/data/'
+data_dir = '/data/V1_Adult_Mouse_Brain_fastqs'
 
 # Load sample metadata
 samples_df = pd.read_csv('inputs/samples.csv')
