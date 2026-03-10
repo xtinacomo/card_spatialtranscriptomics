@@ -7,13 +7,19 @@ import os
 
 # File locations
 data_dir = '/data/'
-work_dir = os.getcwd()
 
 # Load sample metadata
 samples_df = pd.read_csv('inputs/samples.csv')
 
-SAMPLES = samples_df['sample'].tolist()
+#Grab samples,slid_id, and capture_area from samples.csv
+SAMPLES = samples_df["sample"].astype(str).tolist()
+SLIDE_DICT = samples_df.set_index("sample")["slide_id"].to_dict()
+AREA_DICT = samples_df.set_index("sample")["area"].to_dict()
+
 print(f"SAMPLES: {SAMPLES}")
+print(f"SLIDE_DICT: {SLIDE_DICT}")
+print(f"AREA_DICT: {AREA_DICT}")
+
 """========================================================================="""
 """                                  Workflow                               """
 """========================================================================="""
@@ -26,23 +32,28 @@ rule all:
 # SpaceRanger count for Visium
 rule spaceranger_count:
     input:
-        fastqs = lambda wildcards: os.path.join(data_dir, wildcards.sample, "fastqs.tar"),
-        image = lambda wildcards: os.path.join(data_dir, wildcards.sample, "image.tif"),
-        slide = lambda wildcards: os.path.join(data_dir, wildcards.sample, f"{wildcards.sample}.json")
+        fastqs = lambda wc: os.path.join(data_dir, f"{wc.sample}_fastqs.tar"),
+        image  = lambda wc: os.path.join(data_dir, f"{wc.sample}_image.tif")
     output:
         "results/{sample}/filtered_feature_bc_matrix.h5"
+    params:
+        slide = lambda wc: SLIDE_DICT[wc.sample],
+        area  = lambda wc: AREA_DICT[wc.sample]
     threads: 8
     shell:
         """
         module load spaceranger/4.0.1
+        
+        mkdir -p results/{wildcards.sample}/fastqs
+
         spaceranger count \
             --id=results/{wildcards.sample} \
             --transcriptome={config.transcriptome} \
             --fastqs={input.fastqs} \
             --image={input.image} \
-            --slide={input.slide} \
-            --area= {}\
-            --create-bam = F \
+            --slide={params.slide} \
+            --area={params.area}\
+            --create-bam = {config.create_bam} \
             --probe-set={config.probeset}
         """
 
