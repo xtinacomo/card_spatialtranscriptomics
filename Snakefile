@@ -32,7 +32,7 @@ rule all:
 # SpaceRanger count for Visium
 rule spaceranger_count:
     input:
-        fastqs = lambda wc: os.path.join(data_dir, f"{wc.sample}_fastqs.tar"),
+        fastqs = lambda wc: os.path.join(data_dir, f"{wc.sample}_fastq.gz"),
         image  = lambda wc: os.path.join(data_dir, f"{wc.sample}_image.tif")
     output:
         "results/{sample}/filtered_feature_bc_matrix.h5"
