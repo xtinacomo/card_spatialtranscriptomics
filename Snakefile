@@ -7,14 +7,18 @@ import os
 
 # File locations
 data_dir = '/data/'
-work_dir = os.getcwd()
 
 # Load sample metadata
 samples_df = pd.read_csv('inputs/samples.csv')
-xenium_samples = samples_df[samples_df["platform"] == "xenium"]["sample"].tolist()
-visium_samples = samples_df[samples_df["platform"] == "visium"]["sample"].tolist()
 
-sample_platform_dict = samples_df.set_index("sample")["platform"].to_dict()
+#Grab samples,slid_id, and capture_area from samples.csv
+SAMPLES = samples_df["sample"].astype(str).tolist()
+SLIDE_DICT = samples_df.set_index("sample")["slide_id"].to_dict()
+AREA_DICT = samples_df.set_index("sample")["area"].to_dict()
+
+print(f"SAMPLES: {SAMPLES}")
+print(f"SLIDE_DICT: {SLIDE_DICT}")
+print(f"AREA_DICT: {AREA_DICT}")
 
 """========================================================================="""
 """                                  Workflow                               """
@@ -23,32 +27,33 @@ sample_platform_dict = samples_df.set_index("sample")["platform"].to_dict()
 # Final targets for both platforms
 rule all:
     input:
-        expand("results/{sample}/filtered_feature_bc_matrix.h5", sample=visium_samples) +
-        expand("results/{sample}/xenium_processed.tsv", sample=xenium_samples)
+        expand("results/{sample}/filtered_feature_bc_matrix.h5", sample=SAMPLES)
 
 # SpaceRanger count for Visium
 rule spaceranger_count:
     input:
-        fastqs = lambda wildcards: os.path.join(data_dir, wildcards.sample, "fastq"),
-        image = lambda wildcards: os.path.join(data_dir, wildcards.sample, "image.tif"),
-        slide = lambda wildcards: os.path.join(data_dir, wildcards.sample, f"{wildcards.sample}.json")
+        fastqs = lambda wc: os.path.join(data_dir, f"{wc.sample}_fastq.gz"),
+        image  = lambda wc: os.path.join(data_dir, f"{wc.sample}_image.tif")
     output:
-        "results/{sample}/outs/filtered_feature_bc_matrix.h5"
+        "results/{sample}/filtered_feature_bc_matrix.h5"
     params:
-        id = "{sample}",
-        sample = "{sample}",
+        slide = lambda wc: SLIDE_DICT[wc.sample],
+        area  = lambda wc: AREA_DICT[wc.sample]
     threads: 8
     shell:
         """
         module load spaceranger/4.0.1
+        
+        mkdir -p results/{wildcards.sample}/fastqs
+
         spaceranger count \
-            --id={params.id} \
+            --id=results/{wildcards.sample} \
             --transcriptome={config.transcriptome} \
-            --fastqs={config.fastqs} \
-            --sample={params.sample} \
+            --fastqs={input.fastqs} \
             --image={input.image} \
-            --slide={input.slide} \
-            --localcores={params.threads} \
+            --slide={params.slide} \
+            --area={params.area}\
+            --create-bam = {config.create_bam} \
             --probe-set={config.probeset}
         """
 

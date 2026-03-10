@@ -1,2 +1,2 @@
-sample,platform,condition
-CytAssist_FreshFrozen_Mouse_Brain_Rep1,Visium,control
+sample,platform,condition,slide_id,area
+V1_Adult_Mouse_Brain,Visium,control,V19L01-041,C1

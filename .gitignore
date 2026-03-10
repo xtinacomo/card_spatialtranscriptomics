@@ -6,5 +6,9 @@ snakemake_profile
 
 #example data
 data/CytAssist*
+data/Mouse_Brain*
 
-probesets/Visium_Human_Transcriptome_Probe_Set_v2.1.0_GRCh38-2024-A.csv 
+probesets/CytAssist*
+probesets/Visium*
+
+data/V1_Adult*
