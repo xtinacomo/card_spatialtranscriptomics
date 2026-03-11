@@ -7,7 +7,7 @@ import os
 
 # File locations
 data_dir = 'data/'
-results_dir = 'results/'
+#results_dir = 'results/'
 
 # Load sample metadata
 samples_df = pd.read_csv('inputs/samples.csv')
@@ -31,37 +31,39 @@ rule all:
         expand("results/{sample}/outs/filtered_feature_bc_matrix.h5", sample=SAMPLES)
 
 # SpaceRanger count for Visium
-rule spaceranger_count:
-    input:
-        fastqs = lambda wc: os.path.join(data_dir, f"{wc.sample}_fastqs"),
-        image  = lambda wc: os.path.join(data_dir, f"{wc.sample}_fastqs", f"{wc.sample}_image.tif")
-    output:
-        "results/{sample}/outs/filtered_feature_bc_matrix.h5"
-    params:
-        slide = lambda wc: SLIDE_DICT[wc.sample],
-        area  = lambda wc: AREA_DICT[wc.sample],
-        transcriptome= config["transcriptome"],
-        create_bam   = config["create_bam"],
-        probeset     = config["probeset"]
-    threads: 16
-    resources:
-        mem_mb=128000
-    shell:
-        """
-        module load spaceranger/4.0.1
-
-        mkdir -p results
-
-        spaceranger count \
-            --id={wildcards.sample} \
-            --output-dir=results.{wildcards.sample} \
-            --transcriptome={params.transcriptome} \
-            --fastqs={input.fastqs} \
-            --image={input.image} \
-            --slide={params.slide} \
-            --area={params.area} \
-            --create-bam={params.create_bam}
-        """
+#rule spaceranger_count:
+#    input:
+#        fastqs = lambda wc: os.path.join(data_dir, f"{wc.sample}_fastqs"),
+#        image  = lambda wc: os.path.join(data_dir, f"{wc.sample}_fastqs", f"{wc.sample}_image.tif")
+#    output:
+#        "results/{sample}/outs/filtered_feature_bc_matrix.h5"
+#    params:
+#        slide = lambda wc: SLIDE_DICT[wc.sample],
+#        area  = lambda wc: AREA_DICT[wc.sample],
+#        transcriptome= config["transcriptome"],
+#        create_bam   = config["create_bam"],
+#        probeset     = config["probeset"]
+#    threads: 16
+#    resources:
+#        mem_mb=128000,
+#        runtime=3600,
+#        disc_mb=100000
+#    shell:
+#        """
+#        module load spaceranger/4.0.1
+#
+#        mkdir -p results
+#
+#        spaceranger count \
+#            --id={wildcards.sample} \
+#            --output-dir=results.{wildcards.sample} \
+#            --transcriptome={params.transcriptome} \
+#            --fastqs={input.fastqs} \
+#            --image={input.image} \
+#            --slide={params.slide} \
+#            --area={params.area} \
+#            --create-bam={params.create_bam}
+#        """
 
 # Xenium CSV processing
 #rule xenium_process:
@@ -76,11 +78,7 @@ rule spaceranger_count:
 
 rule seurat_process:
     input:
-        matrix = lambda wildcards: (
-            f"results/{wildcards.sample}/outs/filtered_feature_bc_matrix.h5"
-            if sample_platform_dict[wildcards.sample] == "visium" else
-            f"results/{wildcards.sample}/xenium_processed.tsv"
-        )
+        matrix = "results.{sample}/outs/filtered_feature_bc_matrix.h5"
     output:
         rds = "results/{sample}/seurat.rds",
         violin = "results/{sample}/qc_violin.pdf",
@@ -95,17 +93,17 @@ rule seurat_process:
         """
 
 
-rule merge_seurat:
-    input:
-        samples_csv = "input/samples.csv",
-        seurat_objs = expand("results/{sample}/seurat.rds", sample=samples_df["sample"].tolist())
-    output:
-        rds = "results/merged_seurat.rds",
-        plot = "results/merged_umap.pdf",
-        de_condition = "results/de_condition.csv",
-        de_cluster = "results/de_by_cluster.csv"
-    shell:
-        """
-        Rscript scripts/merge_seurat.R {input.samples_csv} {output.rds} {output.plot} {output.de_condition} {output.de_cluster}
-        """
+#rule merge_seurat:
+#    input:
+#        samples_csv = "input/samples.csv",
+#        seurat_objs = expand("results/{sample}/seurat.rds", sample=samples_df["sample"].tolist())
+#    output:
+#        rds = "results/merged_seurat.rds",
+#        plot = "results/merged_umap.pdf",
+#        de_condition = "results/de_condition.csv",
+#        de_cluster = "results/de_by_cluster.csv"
+#    shell:
+#        """
+#        Rscript scripts/merge_seurat.R {input.samples_csv} {output.rds} {output.plot} {output.de_condition} {output.de_cluster}
+#        """
 
