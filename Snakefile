@@ -42,7 +42,7 @@ rule spaceranger_count:
         area  = lambda wc: AREA_DICT[wc.sample],
         transcriptome= config["transcriptome"],
         create_bam   = config["create_bam"],
-        probeset     = config["probeset"]
+        probeset     = lambda wc: f"--probe-set={config['probeset']}" if config.get("probeset") else ""
     threads: 16
 
     resources:
@@ -62,7 +62,7 @@ rule spaceranger_count:
             --slide={params.slide} \
             --area={params.area} \
             --create-bam={params.create_bam} \
-            --probe-set={params.probeset}
+            {params.probeset}
         """
 
 # Xenium CSV processing

@@ -4,14 +4,14 @@ Provided cores: 16
 Rules claiming more threads will be scaled down.
 Select jobs to execute...
 
-[Wed Mar 11 16:08:27 2026]
+[Wed Mar 11 16:12:58 2026]
 rule spaceranger_count:
     input: data/V1_Adult_Mouse_Brain_fastqs, data/V1_Adult_Mouse_Brain_fastqs/V1_Adult_Mouse_Brain_image.tif
     output: results/V1_Adult_Mouse_Brain/outs/filtered_feature_bc_matrix.h5
     jobid: 0
     wildcards: sample=V1_Adult_Mouse_Brain
     threads: 16
-    resources: mem_mb=128000, disk_mb=1000, tmpdir=/lscratch/13668746/tmp, runtime=3600, disc_mb=100000
+    resources: mem_mb=128000, disk_mb=1000, tmpdir=/lscratch/13668865/tmp, runtime=3600, disc_mb=100000
 
 
         module load spaceranger/4.0.1
@@ -22,7 +22,7 @@ rule spaceranger_count:
 error: invalid value 'false' for '--probe-set <CSV>': No such file or directory
 
 For more information, try '--help'.
-[Wed Mar 11 16:08:27 2026]
+[Wed Mar 11 16:12:59 2026]
 Error in rule spaceranger_count:
     jobid: 0
     output: results/V1_Adult_Mouse_Brain/outs/filtered_feature_bc_matrix.h5
