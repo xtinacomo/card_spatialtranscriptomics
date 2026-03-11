@@ -1,0 +1,20 @@
+Building DAG of jobs...
+Using shell: /usr/bin/bash
+Provided cores: 16
+Rules claiming more threads will be scaled down.
+Select jobs to execute...
+
+[Wed Mar 11 16:08:27 2026]
+rule spaceranger_count:
+    input: data/V1_Adult_Mouse_Brain_fastqs, data/V1_Adult_Mouse_Brain_fastqs/V1_Adult_Mouse_Brain_image.tif
+    output: results/V1_Adult_Mouse_Brain/outs/filtered_feature_bc_matrix.h5
+    jobid: 0
+    wildcards: sample=V1_Adult_Mouse_Brain
+    threads: 16
+    resources: mem_mb=128000, disk_mb=1000, tmpdir=/lscratch/13668746/tmp, runtime=3600, disc_mb=100000
+
+
+        module load spaceranger/4.0.1
+
+        spaceranger count             --id=V1_Adult_Mouse_Brain             --output-dir=results/V1_Adult_Mouse_Brain             --transcriptome=/fdb/spaceranger/refdata-spaceranger-2020-A/refdata-gex-mm10-2020-A             --fastqs=data/V1_Adult_Mouse_Brain_fastqs             --image=data/V1_Adult_Mouse_Brain_fastqs/V1_Adult_Mouse_Brain_image.tif             --slide=V19L01-041             --area=C1             --create-bam=false             --probe-set=false
+        

@@ -31,39 +31,39 @@ rule all:
         expand("results/{sample}/outs/filtered_feature_bc_matrix.h5", sample=SAMPLES)
 
 # SpaceRanger count for Visium
-#rule spaceranger_count:
-#    input:
-#        fastqs = lambda wc: os.path.join(data_dir, f"{wc.sample}_fastqs"),
-#        image  = lambda wc: os.path.join(data_dir, f"{wc.sample}_fastqs", f"{wc.sample}_image.tif")
-#    output:
-#        "results/{sample}/outs/filtered_feature_bc_matrix.h5"
-#    params:
-#        slide = lambda wc: SLIDE_DICT[wc.sample],
-#        area  = lambda wc: AREA_DICT[wc.sample],
-#        transcriptome= config["transcriptome"],
-#        create_bam   = config["create_bam"],
-#        probeset     = config["probeset"]
-#    threads: 16
-#    resources:
-#        mem_mb=128000,
-#        runtime=3600,
-#        disc_mb=100000
-#    shell:
-#        """
-#        module load spaceranger/4.0.1
-#
-#        mkdir -p results
-#
-#        spaceranger count \
-#            --id={wildcards.sample} \
-#            --output-dir=results.{wildcards.sample} \
-#            --transcriptome={params.transcriptome} \
-#            --fastqs={input.fastqs} \
-#            --image={input.image} \
-#            --slide={params.slide} \
-#            --area={params.area} \
-#            --create-bam={params.create_bam}
-#        """
+rule spaceranger_count:
+    input:
+        fastqs = lambda wc: os.path.join(data_dir, f"{wc.sample}_fastqs"),
+        image  = lambda wc: os.path.join(data_dir, f"{wc.sample}_fastqs", f"{wc.sample}_image.tif")
+    output:
+        "results/{sample}/outs/filtered_feature_bc_matrix.h5"
+    params:
+        slide = lambda wc: SLIDE_DICT[wc.sample],
+        area  = lambda wc: AREA_DICT[wc.sample],
+        transcriptome= config["transcriptome"],
+        create_bam   = config["create_bam"],
+        probeset     = config["probeset"]
+    threads: 16
+
+    resources:
+        mem_mb=128000,
+        runtime=3600,
+        disc_mb=100000
+    shell:
+        """
+        module load spaceranger/4.0.1
+
+        spaceranger count \
+            --id={wildcards.sample} \
+            --output-dir=results/{wildcards.sample} \
+            --transcriptome={params.transcriptome} \
+            --fastqs={input.fastqs} \
+            --image={input.image} \
+            --slide={params.slide} \
+            --area={params.area} \
+            --create-bam={params.create_bam} \
+            --probe-set={params.probeset}
+        """
 
 # Xenium CSV processing
 #rule xenium_process:
@@ -78,17 +78,16 @@ rule all:
 
 rule seurat_process:
     input:
-        matrix = "results.{sample}/outs/filtered_feature_bc_matrix.h5"
+        matrix = "results{sample}/outs/filtered_feature_bc_matrix.h5"
     output:
         rds = "results/{sample}/seurat.rds",
         violin = "results/{sample}/qc_violin.pdf",
         umap = "results/{sample}/umap_plot.pdf",
         spatial = "results/{sample}/spatial_plot.pdf"
-    params:
-        platform = lambda wildcards: sample_platform_dict[wildcards.sample]
     shell:
         """
-        Rscript scripts/seurat_process.R {wildcards.sample} {params.platform} {input.matrix} \
+        Rscript scripts/seurat_process.R \
+        {wildcards.sample} {input.matrix} \
         {output.rds} {output.violin} {output.umap} {output.spatial}
         """
 
