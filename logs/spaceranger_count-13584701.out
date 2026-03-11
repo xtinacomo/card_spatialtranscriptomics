@@ -205,3 +205,5 @@ samtools: samtools 1.16.1
 2026-03-10 15:42:13 [runtime] (update)          ID.V1_Adult_Mouse_Brain.SPATIAL_RNA_COUNTER_CS.SPATIAL_MATRIX_COMPUTER._MATRIX_COMPUTER.ALIGN_AND_COUNT.fork0 chunks running (0/20 completed)
 2026-03-10 15:47:17 [runtime] (update)          ID.V1_Adult_Mouse_Brain.SPATIAL_RNA_COUNTER_CS.SPATIAL_MATRIX_COMPUTER._MATRIX_COMPUTER.ALIGN_AND_COUNT.fork0 chunks running (4/20 completed)
 2026-03-10 15:52:35 [runtime] (update)          ID.V1_Adult_Mouse_Brain.SPATIAL_RNA_COUNTER_CS.SPATIAL_MATRIX_COMPUTER._MATRIX_COMPUTER.ALIGN_AND_COUNT.fork0 chunks running (4/20 completed)
+2026-03-10 15:57:37 [runtime] (update)          ID.V1_Adult_Mouse_Brain.SPATIAL_RNA_COUNTER_CS.SPATIAL_MATRIX_COMPUTER._MATRIX_COMPUTER.ALIGN_AND_COUNT.fork0 chunks running (7/20 completed)
+slurmstepd: error: *** JOB 13584701 ON cn4366 CANCELLED AT 2026-03-10T15:58:08 ***
