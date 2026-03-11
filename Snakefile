@@ -52,6 +52,7 @@ rule spaceranger_count:
     shell:
         """
         module load spaceranger/4.0.1
+        rm -rf results/{wildcards.sample}
 
         spaceranger count \
             --id={wildcards.sample} \
