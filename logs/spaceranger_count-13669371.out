@@ -1,0 +1,50 @@
+Building DAG of jobs...
+Using shell: /usr/bin/bash
+Provided cores: 16
+Rules claiming more threads will be scaled down.
+Select jobs to execute...
+
+[Wed Mar 11 16:18:40 2026]
+rule spaceranger_count:
+    input: data/V1_Adult_Mouse_Brain_fastqs, data/V1_Adult_Mouse_Brain_fastqs/V1_Adult_Mouse_Brain_image.tif
+    output: results/V1_Adult_Mouse_Brain/outs/filtered_feature_bc_matrix.h5
+    jobid: 0
+    wildcards: sample=V1_Adult_Mouse_Brain
+    threads: 16
+    resources: mem_mb=128000, disk_mb=1000, tmpdir=/lscratch/13669371/tmp, runtime=3600, disc_mb=100000
+
+
+        module load spaceranger/4.0.1
+
+        spaceranger count             --id=V1_Adult_Mouse_Brain             --output-dir=results/V1_Adult_Mouse_Brain             --transcriptome=/fdb/spaceranger/refdata-spaceranger-2020-A/refdata-gex-mm10-2020-A             --fastqs=data/V1_Adult_Mouse_Brain_fastqs             --image=data/V1_Adult_Mouse_Brain_fastqs/V1_Adult_Mouse_Brain_image.tif             --slide=V19L01-041             --area=C1             --create-bam=false             
+        
+[+] Loading spaceranger  4.0.1 
+
+
+Martian Runtime - v4.0.14
+
+RuntimeError: /vf/users/CARDPB2/users/comocn/spatial/card_spatialtranscriptomics/results/V1_Adult_Mouse_Brain is not a pipestance directory
+
+2026-03-11 16:18:40 Shutting down.
+Saving pipestance info to "results/V1_Adult_Mouse_Brain/V1_Adult_Mouse_Brain.mri.tgz"
+For assistance, upload this file to 10x Genomics by running:
+
+spaceranger upload <your_email> "results/V1_Adult_Mouse_Brain/V1_Adult_Mouse_Brain.mri.tgz"
+
+[Wed Mar 11 16:18:43 2026]
+Error in rule spaceranger_count:
+    jobid: 0
+    output: results/V1_Adult_Mouse_Brain/outs/filtered_feature_bc_matrix.h5
+    shell:
+        
+        module load spaceranger/4.0.1
+
+        spaceranger count             --id=V1_Adult_Mouse_Brain             --output-dir=results/V1_Adult_Mouse_Brain             --transcriptome=/fdb/spaceranger/refdata-spaceranger-2020-A/refdata-gex-mm10-2020-A             --fastqs=data/V1_Adult_Mouse_Brain_fastqs             --image=data/V1_Adult_Mouse_Brain_fastqs/V1_Adult_Mouse_Brain_image.tif             --slide=V19L01-041             --area=C1             --create-bam=false             
+        
+        (one of the commands exited with non-zero exit code; note that snakemake uses bash strict mode!)
+
+Shutting down, this might take some time.
+Exiting because a job execution failed. Look above for error message
+SAMPLES: ['V1_Adult_Mouse_Brain']
+SLIDE_DICT: {'V1_Adult_Mouse_Brain': 'V19L01-041'}
+AREA_DICT: {'V1_Adult_Mouse_Brain': 'C1'}

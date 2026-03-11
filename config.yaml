@@ -1,8 +1,8 @@
 #transcriptome 
 transcriptome: "/fdb/spaceranger/refdata-spaceranger-2020-A/refdata-gex-mm10-2020-A"
 
-#probeset
-probeset: "false"
+#probeset, explicitly state the path or false without quotes if not using probeset
+probeset: false
 
 #create bam
 create_bam: "false"
