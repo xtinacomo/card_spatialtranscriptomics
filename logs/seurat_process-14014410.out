@@ -1,0 +1,35 @@
+Building DAG of jobs...
+Using shell: /usr/bin/bash
+Provided cores: 2
+Rules claiming more threads will be scaled down.
+Select jobs to execute...
+
+[Mon Mar 16 21:12:59 2026]
+rule seurat_process:
+    input: results/V1_Adult_Mouse_Brain/outs/filtered_feature_bc_matrix.h5
+    output: results/seurat/V1_Adult_Mouse_Brain/seurat.rds, results/seurat/V1_Adult_Mouse_Brain/qc_violin.pdf, results/seurat/V1_Adult_Mouse_Brain/umap_plot.pdf, results/seurat/V1_Adult_Mouse_Brain/spatial_plot.pdf
+    jobid: 0
+    wildcards: sample=V1_Adult_Mouse_Brain
+    resources: mem_mb=1000, disk_mb=1000, tmpdir=/lscratch/14014410/tmp
+
+
+        mkdir -p results/seurat/V1_Adult_Mouse_Brain
+        Rscript scripts/seurat_process.R         V1_Adult_Mouse_Brain         results/V1_Adult_Mouse_Brain/outs/filtered_feature_bc_matrix.h5         results/seurat/V1_Adult_Mouse_Brain/seurat.rds         results/seurat/V1_Adult_Mouse_Brain/qc_violin.pdf         results/seurat/V1_Adult_Mouse_Brain/umap_plot.pdf         results/seurat/V1_Adult_Mouse_Brain/spatial_plot.pdf
+        
+/usr/bin/bash: line 2: Rscript: command not found
+[Mon Mar 16 21:12:59 2026]
+Error in rule seurat_process:
+    jobid: 0
+    output: results/seurat/V1_Adult_Mouse_Brain/seurat.rds, results/seurat/V1_Adult_Mouse_Brain/qc_violin.pdf, results/seurat/V1_Adult_Mouse_Brain/umap_plot.pdf, results/seurat/V1_Adult_Mouse_Brain/spatial_plot.pdf
+    shell:
+        
+        mkdir -p results/seurat/V1_Adult_Mouse_Brain
+        Rscript scripts/seurat_process.R         V1_Adult_Mouse_Brain         results/V1_Adult_Mouse_Brain/outs/filtered_feature_bc_matrix.h5         results/seurat/V1_Adult_Mouse_Brain/seurat.rds         results/seurat/V1_Adult_Mouse_Brain/qc_violin.pdf         results/seurat/V1_Adult_Mouse_Brain/umap_plot.pdf         results/seurat/V1_Adult_Mouse_Brain/spatial_plot.pdf
+        
+        (one of the commands exited with non-zero exit code; note that snakemake uses bash strict mode!)
+
+Shutting down, this might take some time.
+Exiting because a job execution failed. Look above for error message
+SAMPLES: ['V1_Adult_Mouse_Brain']
+SLIDE_DICT: {'V1_Adult_Mouse_Brain': 'V19L01-041'}
+AREA_DICT: {'V1_Adult_Mouse_Brain': 'C1'}

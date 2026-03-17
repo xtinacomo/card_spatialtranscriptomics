@@ -26,12 +26,16 @@ if (platform == "visium") {
 seurat_obj[["percent.mt"]] <- PercentageFeatureSet(seurat_obj, pattern = "^MT-")
 
 # Violin plot of QC
-pdf(file = output_violin, width = 8, height = 6)
-VlnPlot(seurat_obj, features = c("nFeature_RNA", "nCount_RNA", "percent.mt"), ncol = 3)
+pdf(file = QC_violin, width = 8, height = 6)
+VlnPlot(seurat_obj, features = c("nCount_Spatial", "percent.mt"), ncol = 2)
+dev.off()
+
+pdf(file=QC_spatial, width=8, height=6)
+SpatialFeaturePlot(seurat_obj, features = "nCount_Spatial" + theme(legend.position = "right")
 dev.off()
 
 # Basic filtering
-seurat_obj <- subset(seurat_obj, subset = nFeature_RNA > 200 & percent.mt < 20)
+#seurat_obj <- subset(seurat_obj, subset = nFeature_RNA > 200 & percent.mt < 20)
 
 # Standard pipeline
 seurat_obj <- SCTransform(seurat_obj, verbose = FALSE)

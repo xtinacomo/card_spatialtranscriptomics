@@ -16,10 +16,12 @@ samples_df = pd.read_csv('inputs/samples.csv')
 SAMPLES = samples_df["sample"].astype(str).tolist()
 SLIDE_DICT = samples_df.set_index("sample")["slide_id"].to_dict()
 AREA_DICT = samples_df.set_index("sample")["area"].to_dict()
+PLATFORM_DICT = samples_df.set_index("sample")["platform"].to_dict()
 
 print(f"SAMPLES: {SAMPLES}")
 print(f"SLIDE_DICT: {SLIDE_DICT}")
 print(f"AREA_DICT: {AREA_DICT}")
+print(f"PLATFORM_DICT: {PLATFORM_DICT}")
 
 """========================================================================="""
 """                                  Workflow                               """
@@ -79,17 +81,24 @@ rule all:
 
 rule seurat_process:
     input:
-        matrix = "results/{sample}/outs/filtered_feature_bc_matrix.h5"
+        matrix = "results/{sample}/outs/"
     output:
         rds = "results/seurat/{sample}/seurat.rds",
         violin = "results/seurat/{sample}/qc_violin.pdf",
         umap = "results/seurat/{sample}/umap_plot.pdf",
         spatial = "results/seurat/{sample}/spatial_plot.pdf"
+    resources:
+        mem_mb=32000
+    params:
+        platform = lambda wc: PLATFORM_DICT[wc.sample]
     shell:
         """
+        module load R
         mkdir -p results/seurat/{wildcards.sample}
+
         Rscript scripts/seurat_process.R \
         {wildcards.sample} \
+        {params.platform} \
         {input.matrix} \
         {output.rds} \
         {output.violin} \
