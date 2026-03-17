@@ -28,43 +28,43 @@ print(f"AREA_DICT: {AREA_DICT}")
 # Final targets for both platforms
 rule all:
     input:
-        expand("results/{sample}/outs/filtered_feature_bc_matrix.h5", sample=SAMPLES)
+        expand("results/seurat/{sample}/seurat.rds", sample=SAMPLES),
+        expand("results/seurat/{sample}/spatial_plot.pdf", sample=SAMPLES)
 
 # SpaceRanger count for Visium
-rule spaceranger_count:
-    input:
-        fastqs = lambda wc: os.path.join(data_dir, f"{wc.sample}_fastqs"),
-        image  = lambda wc: os.path.join(data_dir, f"{wc.sample}_fastqs", f"{wc.sample}_image.tif")
-    output:
-        "results/{sample}/outs/filtered_feature_bc_matrix.h5"
-    params:
-        slide = lambda wc: SLIDE_DICT[wc.sample],
-        area  = lambda wc: AREA_DICT[wc.sample],
-        transcriptome= config["transcriptome"],
-        create_bam   = config["create_bam"],
-        probeset = lambda wc: f"--probe-set={config['probeset']}" if config.get("probeset") not in [False, "false", "False", None] else ""
-    threads: 16
-
-    resources:
-        mem_mb=128000,
-        runtime=3600,
-        disc_mb=100000
-    shell:
-        """
-        module load spaceranger/4.0.1
-        rm -rf results/{wildcards.sample}
-
-        spaceranger count \
-            --id={wildcards.sample} \
-            --output-dir=results/{wildcards.sample} \
-            --transcriptome={params.transcriptome} \
-            --fastqs={input.fastqs} \
-            --image={input.image} \
-            --slide={params.slide} \
-            --area={params.area} \
-            --create-bam={params.create_bam} \
-            {params.probeset}
-        """
+#rule spaceranger_count:
+#    input:
+#        fastqs = lambda wc: os.path.join(data_dir, f"{wc.sample}_fastqs"),
+#        image  = lambda wc: os.path.join(data_dir, f"{wc.sample}_fastqs", f"{wc.sample}_image.tif")
+#    output:
+#        "results/{sample}/outs/filtered_feature_bc_matrix.h5"
+#    params:
+#        slide = lambda wc: SLIDE_DICT[wc.sample],
+#        area  = lambda wc: AREA_DICT[wc.sample],
+#        transcriptome= config["transcriptome"],
+#        create_bam   = config["create_bam"],
+#        probeset = lambda wc: f"--probe-set={config['probeset']}" if config.get("probeset") not in [False, "false", "False", None] else ""
+#    threads: 16
+#
+#    resources:
+#        mem_mb=128000,
+#        runtime=3600,
+#        disc_mb=100000
+#    shell:
+#        """
+#        rm -rf results/{wildcards.sample}
+#
+#        spaceranger count \
+#            --id={wildcards.sample} \
+#            --output-dir=results/{wildcards.sample} \
+#            --transcriptome={params.transcriptome} \
+#            --fastqs={input.fastqs} \
+#            --image={input.image} \
+#            --slide={params.slide} \
+#            --area={params.area} \
+#            --create-bam={params.create_bam} \
+#            {params.probeset}
+#        """
 
 # Xenium CSV processing
 #rule xenium_process:
@@ -79,17 +79,22 @@ rule spaceranger_count:
 
 rule seurat_process:
     input:
-        matrix = "results{sample}/outs/filtered_feature_bc_matrix.h5"
+        matrix = "results/{sample}/outs/filtered_feature_bc_matrix.h5"
     output:
-        rds = "results/{sample}/seurat.rds",
-        violin = "results/{sample}/qc_violin.pdf",
-        umap = "results/{sample}/umap_plot.pdf",
-        spatial = "results/{sample}/spatial_plot.pdf"
+        rds = "results/seurat/{sample}/seurat.rds",
+        violin = "results/seurat/{sample}/qc_violin.pdf",
+        umap = "results/seurat/{sample}/umap_plot.pdf",
+        spatial = "results/seurat/{sample}/spatial_plot.pdf"
     shell:
         """
+        mkdir -p results/seurat/{wildcards.sample}
         Rscript scripts/seurat_process.R \
-        {wildcards.sample} {input.matrix} \
-        {output.rds} {output.violin} {output.umap} {output.spatial}
+        {wildcards.sample} \
+        {input.matrix} \
+        {output.rds} \
+        {output.violin} \
+        {output.umap} \
+        {output.spatial}
         """
 
 
