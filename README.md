@@ -5,8 +5,8 @@ A Snakemake-based spatial transcriptomics workflow for processing and analyzing 
 ### Running the Pipeline
 1. Clone this repository and move into the directory: 
 ```
-git clone x
-cd SpatialTranscriptomics
+git clone https://github.com/xtinacomo/card_spatialtranscriptomics.git
+cd card_spatialtranscriptomics
 ```
 
 ### Inputs:
