@@ -1,4 +1,6 @@
 #!/usr/bin/env Rscript
+BiocManager::install("glmGamPoi")
+library(glmGamPoi)
 
 args <- commandArgs(trailingOnly = TRUE)
 sample <- args[1]
@@ -14,7 +16,7 @@ library(ggplot2)
 
 # Load data
 if (platform == "visium") {
-  seurat_obj <- Load10X_Spatial(data.dir = input_path)
+  seurat_obj <- Load10X_Spatial(data.dir = input_path, assay = "Spatial", filename = "filtered_feature_bc_matrix.h5")
 } else if (platform == "xenium") {
   data <- read.delim(input_path, sep="\t", row.names = 1)
   seurat_obj <- CreateSeuratObject(counts = data)
@@ -31,18 +33,18 @@ VlnPlot(seurat_obj, features = c("nCount_Spatial", "percent.mt"), ncol = 2)
 dev.off()
 
 pdf(file=output_spatial, width=8, height=6)
-SpatialFeaturePlot(seurat_obj, features = "nCount_Spatial" + theme(legend.position = "right")
+SpatialFeaturePlot(seurat_obj, features = "nCount_Spatial") + theme(legend.position = "right")
 dev.off()
 
 # Basic filtering
 #seurat_obj <- subset(seurat_obj, subset = nFeature_RNA > 200 & percent.mt < 20)
 
 # Standard pipeline
-seurat_obj <- SCTransform(seurat_obj, verbose = FALSE)
-seurat_obj <- RunPCA(seurat_obj, verbose = FALSE)
-seurat_obj <- FindNeighbors(seurat_obj, dims = 1:30)
+seurat_obj <- SCTransform(seurat_obj, assay = "Spatial", verbose = FALSE)
+seurat_obj <- RunPCA(seurat_obj, assay ="SCT", verbose = FALSE)
+seurat_obj <- FindNeighbors(seurat_obj, reduction = "pca", dims = 1:30)
 seurat_obj <- FindClusters(seurat_obj, resolution = 0.5)
-seurat_obj <- RunUMAP(seurat_obj, dims = 1:30)
+seurat_obj <- RunUMAP(seurat_obj, reduction = "pca", dims = 1:30)
 
 # UMAP plot
 pdf(file = output_umap, width = 6, height = 5)
