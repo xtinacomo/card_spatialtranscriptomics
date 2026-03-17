@@ -1,13 +1,6 @@
 # Spatial Transcriptomics 
 ## Pipeline
-This pipeline processes 10x Genomics Visium and Xenium spatial tranascriptomics data from fastq files using [Snakemake](https://snakemake.readthedocs.io), SpaceRanger and [Seurat](https://satijalab.org/seurat/).
-
-### Requirements
-- Snakemake ≥ v7
-- R ≥ v4.2
-- R packages: Seurat, ggplot2, dplyr, patchwork
-- Spaceranger (for Visium samples)
-- Linux environment with SLURM (Biowulf-friendly)
+A Snakemake-based spatial transcriptomics workflow for processing and analyzing 10x Genomics **Visium** and **Xenium** data. The repository is organized to support preprocessing outputs from Space Ranger / Xenium-style inputs and downstream analysis in **Seurat**. At present, the active workflow centers on per-sample Seurat object generation and QC/visualization outputs
 
 ### Running the Pipeline
 1. Clone this repository and move into the directory: 
@@ -28,7 +21,27 @@ cd SpatialTranscriptomics
 5. For Visium samples, customize the snakefile to include the path to your transcriptome file 
 6. Run snakemake.sh file
 
+```
+bash snakemake.sh
+```
+
 ### Outputs:
 
 ![Screenshot 2025-04-15 at 1 34 58 PM](https://github.com/user-attachments/assets/6afdeb81-9fd4-44a5-a69a-eaddd795effd)
+
+## Repository structure
+
+```text
+card_spatialtranscriptomics/
+├── Snakefile
+├── config.yaml
+├── snakemake.sh
+├── README.md
+├── inputs/
+│   └── samples.csv
+├── logs/
+├── probesets/
+└── scripts/
+    ├── seurat_process.R
+    └── merge_seurat.R
 
