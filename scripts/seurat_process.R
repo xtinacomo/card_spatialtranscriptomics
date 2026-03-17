@@ -19,18 +19,18 @@ if (platform == "visium") {
   data <- read.delim(input_path, sep="\t", row.names = 1)
   seurat_obj <- CreateSeuratObject(counts = data)
 } else {
-  stop("Unsupported platform")
+  stop("Unsupported platform, must be 'visium' or 'xenium")
 }
 
 # Mito % for QC
 seurat_obj[["percent.mt"]] <- PercentageFeatureSet(seurat_obj, pattern = "^MT-")
 
 # Violin plot of QC
-pdf(file = QC_violin, width = 8, height = 6)
+pdf(file = output_violin, width = 8, height = 6)
 VlnPlot(seurat_obj, features = c("nCount_Spatial", "percent.mt"), ncol = 2)
 dev.off()
 
-pdf(file=QC_spatial, width=8, height=6)
+pdf(file=output_spatial, width=8, height=6)
 SpatialFeaturePlot(seurat_obj, features = "nCount_Spatial" + theme(legend.position = "right")
 dev.off()
 
@@ -40,9 +40,9 @@ dev.off()
 # Standard pipeline
 seurat_obj <- SCTransform(seurat_obj, verbose = FALSE)
 seurat_obj <- RunPCA(seurat_obj, verbose = FALSE)
-seurat_obj <- FindNeighbors(seurat_obj, dims = 1:10)
+seurat_obj <- FindNeighbors(seurat_obj, dims = 1:30)
 seurat_obj <- FindClusters(seurat_obj, resolution = 0.5)
-seurat_obj <- RunUMAP(seurat_obj, dims = 1:10)
+seurat_obj <- RunUMAP(seurat_obj, dims = 1:30)
 
 # UMAP plot
 pdf(file = output_umap, width = 6, height = 5)
