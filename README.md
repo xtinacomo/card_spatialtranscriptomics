@@ -1,6 +1,8 @@
 # Spatial Transcriptomics 
 ## Pipeline
-A Snakemake-based spatial transcriptomics workflow for processing and analyzing 10x Genomics **Visium** and **Xenium** data. The repository is organized to support preprocessing outputs from Space Ranger / Xenium-style inputs and downstream analysis in **Seurat**. At present, the active workflow centers on per-sample Seurat object generation and QC/visualization outputs
+A Snakemake-based spatial transcriptomics workflow for processing and analyzing 10x Genomics **Visium** and **Xenium** data. The repository is organized to support preprocessing outputs from Space Ranger / Xenium-style inputs and downstream analysis in **Seurat**. At present, the active workflow centers on per-sample Seurat object generation and QC/visualization outputs.
+
+This pipeline follows the example tutorial of this data set: https://www.10xgenomics.com/support/software/space-ranger/latest/tutorials/count-ff-tutorial
 
 ### Running the Pipeline
 1. Clone this repository and move into the directory: 
@@ -10,15 +12,14 @@ cd card_spatialtranscriptomics
 ```
 
 ### Inputs:
-2. Edit inputs/samples.csv file to include sample information
-
-![Screenshot 2025-04-15 at 1 25 26 PM](https://github.com/user-attachments/assets/8c57334e-b357-41e1-b73a-cab2d290b6f8)
+2. Edit inputs/samples.csv file to include sample information for sample name (folder name), platform (xenium or visium), condition (control or treatment), and if using Visium, slide_id and slide area from Visium slide.
 
 3. Add your data to the data folder and each sample has its' own folder:
 
 ![Screenshot 2025-04-15 at 1 32 59 PM](https://github.com/user-attachments/assets/7166696d-0bc7-4284-8196-60eb9fe86827)
 
-5. For Visium samples, customize the snakefile to include the path to your transcriptome file 
+5. Customize the config.yaml to include the path to your transcriptome file, the path for the probeset.csv file if available (otherwise set to false), and if you want to create bam files (true or false). 
+   
 6. Run snakemake.sh file
 
 ```
