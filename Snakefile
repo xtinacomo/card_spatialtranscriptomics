@@ -47,6 +47,7 @@ rule spaceranger_count:
         create_bam   = config["create_bam"],
         probeset = lambda wc: f"--probe-set={config['probeset']}" if config.get("probeset") not in [False, "false", "False", None] else ""
         cytaimage  = lambda wc: f"--cyta-image={data_dir}/{wc.sample}_fastqs/{wc.sample}_cytaimage.jpeg" if config.get("cytaimage") not in [False, "false", "False", None] else ""
+        loupealignment = config["loupealignment"] if config.get("loupealignment") not in [False, "false", "False", None] else ""
 
     threads: 16
 
@@ -64,12 +65,13 @@ rule spaceranger_count:
             --transcriptome={params.transcriptome} \
             --fastqs={input.fastqs} \
             --image={input.image} \
-            --cytaimage={params.cytaimage} \
             --slide={params.slide} \
             --area={params.area} \
             --create-bam={params.create_bam} \
             --nucleus-segmentation={params.nucleus_segmentation} \
-            {params.probeset}
+            {params.loupealignment} \
+            {params.probeset} \
+            {params.cytaimage}
         """
 
 # Xenium CSV processing
