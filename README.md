@@ -13,8 +13,9 @@ cd card_spatialtranscriptomics
 
 ### Inputs:
 2. Edit inputs/samples.csv file to include sample information for sample name (folder name), platform (xenium or visium), condition (control or treatment), and if using Visium, slide_id and slide area from Visium slide.
+   If Visium slide is unknown use : --unknown-slide 
 
-3. Add your data to the data folder and each sample has its' own folder:
+4. Add your data to the data folder and each sample has its' own folder:
 
 ![Screenshot 2025-04-15 at 1 32 59 PM](https://github.com/user-attachments/assets/7166696d-0bc7-4284-8196-60eb9fe86827)
 
