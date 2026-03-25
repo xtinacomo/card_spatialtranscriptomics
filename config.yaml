@@ -7,6 +7,9 @@ probeset: false
 #create bam
 create_bam: "false"
 
+#nuclear segemenation
+nuclear_segmentation: "false"
+
 #following data from this link
 #https://www.10xgenomics.com/support/software/space-ranger/latest/tutorials/count-ff-tutorial
 

@@ -1,0 +1,151 @@
+Building DAG of jobs...
+Using shell: /usr/bin/bash
+Provided cores: 2
+Rules claiming more threads will be scaled down.
+Select jobs to execute...
+
+[Tue Mar 17 11:56:21 2026]
+rule seurat_process:
+    input: results/V1_Adult_Mouse_Brain/outs
+    output: results/seurat/V1_Adult_Mouse_Brain/seurat.rds, results/seurat/V1_Adult_Mouse_Brain/qc_violin.pdf, results/seurat/V1_Adult_Mouse_Brain/umap_plot.pdf, results/seurat/V1_Adult_Mouse_Brain/spatial_plot.pdf
+    jobid: 0
+    wildcards: sample=V1_Adult_Mouse_Brain
+    resources: mem_mb=32000, disk_mb=1000, tmpdir=/lscratch/14071918/tmp
+
+
+        module load R
+        mkdir -p results/seurat/V1_Adult_Mouse_Brain
+
+        Rscript scripts/seurat_process.R         V1_Adult_Mouse_Brain         visium         results/V1_Adult_Mouse_Brain/outs         results/seurat/V1_Adult_Mouse_Brain/seurat.rds         results/seurat/V1_Adult_Mouse_Brain/qc_violin.pdf         results/seurat/V1_Adult_Mouse_Brain/umap_plot.pdf         results/seurat/V1_Adult_Mouse_Brain/spatial_plot.pdf
+        
+[+] Loading gcc  11.3.0  ... 
+[+] Loading HDF5  1.12.2 
+[+] Loading netcdf  4.9.0 
+[-] Unloading gcc  11.3.0  ... 
+[+] Loading gcc  11.3.0  ... 
+[+] Loading openmpi/4.1.3/gcc-11.3.0  ... 
+[+] Loading pandoc  2.18  on cn4384 
+[+] Loading TeX 2024 
+[+] Loading pcre2  10.40 
+[+] Loading libtiff libraries v4.6.0  ... 
+[+] Loading R 4.5.0 
+'getOption("repos")' replaces Bioconductor standard repositories, see
+'help("repositories", package = "BiocManager")' for details.
+Replacement repositories:
+    CRAN: https://cloud.r-project.org
+Bioconductor version 3.21 (BiocManager 1.30.27), R 4.5.0 (2025-04-11)
+Installation paths not writeable, unable to update packages
+  path: /usr/local/apps/R/4.5/4.5.0/lib64/R/library
+  packages:
+    boot, cluster, foreign, lattice, Matrix, survival
+  path: /usr/local/apps/R/4.5/site-library_4.5.0
+  packages:
+    actuar, ada, AER, argparser, arm, arrow, base64enc, batchtools, BB, BBmisc,
+    bbotk, bibtex, bindata, bindrcpp, blob, BMA, broom, broom.mixed, bslib,
+    car, carData, checkmate, clock, clue, compute.es, copula, cpp11, Cubist,
+    cyclocomp, data.table, DBI, dbplyr, DDRTree, deSolve, distributional,
+    doFuture, doRNG, dplyr, dtplyr, dunn.test, effects, effectsize, emmeans,
+    epiDisplay, epiR, ergm, exactRankTests, expint, extraDistr, fastmatch,
+    fitdistrplus, flashClust, flextable, forecast, forestplot, fpc, fs, future,
+    future.apply, gap, gargle, gbm, gdtools, GenomeInfoDb, geomorph, geosphere,
+    ggalluvial, ggformula, GGIR, ggiraph, GGIRread, ggplot2, ggpubr, ggrepel,
+    ggstats, ggtangle, ggvis, glmmTMB, globals, Gmisc, gmp, graphlayouts,
+    gridtext, gsl, gt, gtExtras, hash, highr, httr, igraph, ijtiff, insight,
+    iotools, ipw, irlba, keras, klaR, LaplacesDemon, later, LearnBayes, lgr,
+    lhs, libcoin, linprog, listenv, lme4, lmerTest, lobstr, lpSolveAPI,
+    lubridate, magick, manipulateWidget, mcbiopi, merTools, mgcv, mirai,
+    misc3d, miscTools, mize, mlbench, mlmRev, mlr3, mlr3misc, mlr3pipelines,
+    mlr3tuning, mmap, mnormt, msigdbr, multcomp, multcompView, mvQuad, mvtnorm,
+    nanonext, network, nleqslv, np, officer, opencv, OpenMx, openssl,
+    operator.tools, paran, party, partykit, paws.common, pbdMPI, pdftools,
+    pepr, performance, permute, pkgload, plotly, plotrix, pls, plsVarSel,
+    plumber, png, prabclus, prodlim, profileModel, psych, qrng, qs2, questionr,
+    QuickJSR, R2OpenBUGS, R2WinBUGS, ragg, randomForestSRC, ranger, rappdirs,
+    rbibutils, RcppGSL, RcppML, RcppNumerical, RcppParallel, RcppThread,
+    Rdpack, readr, reformulas, renv, reticulate, rgl, riskRegression, rJava,
+    RMariaDB, rms, RMySQL, rncl, RNifti, robustbase, robustHD, ROCR,
+    ROpenCVLite, rotl, rsample, RSNNS, RSQLite, rstudioapi, RWeka,
+    scatterplot3d, scrime, secretbase, segmented, semTools, sensitivity,
+    seqminer, sf, shiny, shinyBS, shinyjs, shinyWidgets, simsurv, SIS, sn,
+    snowflakeauth, sp, sparsevctrs, spatstat, spatstat.explore, spatstat.geom,
+    spatstat.linnet, spatstat.model, spatstat.random, spatstat.univar,
+    spatstat.utils, spdep, sqldf, SQUAREM, stabs, stringdist, stringfish,
+    SuperGauss, survey, survminer, systemfonts, targets, terra, textshaping,
+    TFMPvalue, timechange, timeDate, tm, trust, tseries, udunits2, units,
+    useful, uuid, vctrs, vegan, viridisLite, vroom, warp, WGCNA, wikitaxa,
+    xgboost, XLConnect, XML, xml2, xtable, xts, yulab.utils, zCompositions
+Old packages: 'devtools', 'parallelly', 'xfun'
+Warning message:
+package(s) not installed when version(s) same as or greater than current; use
+  `force = TRUE` to re-install: 'glmGamPoi' 
+Loading required package: SeuratObject
+Loading required package: sp
+
+Attaching package: ‘SeuratObject’
+
+The following objects are masked from ‘package:base’:
+
+    intersect, t
+
+
+Attaching package: ‘ggplot2’
+
+The following object is masked from ‘package:glmGamPoi’:
+
+    vars
+
+Warning: Default search for "data" layer in "Spatial" assay yielded no results; utilizing "counts" layer instead.
+Warning message:
+In SingleExIPlot(type = type, data = data[, x, drop = FALSE], idents = idents,  :
+  All cells have the same value of percent.mt.
+null device 
+          1 
+null device 
+          1 
+Computing nearest neighbor graph
+Computing SNN
+Modularity Optimizer version 1.3.0 by Ludo Waltman and Nees Jan van Eck
+
+Number of nodes: 1847
+Number of edges: 53561
+
+Running Louvain algorithm...
+0%   10   20   30   40   50   60   70   80   90   100%
+[----|----|----|----|----|----|----|----|----|----|
+**************************************************|
+Maximum modularity in 10 random starts: 0.9134
+Number of communities: 14
+Elapsed time: 0 seconds
+Warning: The default method for RunUMAP has changed from calling Python UMAP via reticulate to the R-native UWOT using the cosine metric
+To use Python UMAP via reticulate, set umap.method to 'umap-learn' and metric to 'correlation'
+This message will be shown once per session
+11:57:11 UMAP embedding parameters a = 0.9922 b = 1.112
+11:57:11 Read 1847 rows and found 30 numeric columns
+11:57:11 Using Annoy for neighbor search, n_neighbors = 30
+11:57:11 Building Annoy index with metric = cosine, n_trees = 50
+0%   10   20   30   40   50   60   70   80   90   100%
+[----|----|----|----|----|----|----|----|----|----|
+**************************************************|
+11:57:11 Writing NN index file to temp file /lscratch/14071918/RtmpI11qXZ/file1b1b5c11fdde74
+11:57:11 Searching Annoy index using 1 thread, search_k = 3000
+11:57:12 Annoy recall = 100%
+11:57:12 Commencing smooth kNN distance calibration using 1 thread with target n_neighbors = 30
+11:57:14 Initializing from normalized Laplacian + noise (using RSpectra)
+11:57:14 Commencing optimization for 500 epochs, with 71608 positive edges
+11:57:14 Using rng type: pcg
+Using method 'umap'
+0%   10   20   30   40   50   60   70   80   90   100%
+[----|----|----|----|----|----|----|----|----|----|
+**************************************************|
+11:57:17 Optimization finished
+null device 
+          1 
+null device 
+          1 
+[Tue Mar 17 11:57:36 2026]
+Finished job 0.
+1 of 1 steps (100%) done
+SAMPLES: ['V1_Adult_Mouse_Brain']
+SLIDE_DICT: {'V1_Adult_Mouse_Brain': 'V19L01-041'}
+AREA_DICT: {'V1_Adult_Mouse_Brain': 'C1 '}
+PLATFORM_DICT: {'V1_Adult_Mouse_Brain': 'visium'}

@@ -34,39 +34,43 @@ rule all:
         expand("results/seurat/{sample}/spatial_plot.pdf", sample=SAMPLES)
 
 # SpaceRanger count for Visium
-#rule spaceranger_count:
-#    input:
-#        fastqs = lambda wc: os.path.join(data_dir, f"{wc.sample}_fastqs"),
-#        image  = lambda wc: os.path.join(data_dir, f"{wc.sample}_fastqs", f"{wc.sample}_image.tif")
-#    output:
-#        "results/{sample}/outs/filtered_feature_bc_matrix.h5"
-#    params:
-#        slide = lambda wc: SLIDE_DICT[wc.sample],
-#        area  = lambda wc: AREA_DICT[wc.sample],
-#        transcriptome= config["transcriptome"],
-#        create_bam   = config["create_bam"],
-#        probeset = lambda wc: f"--probe-set={config['probeset']}" if config.get("probeset") not in [False, "false", "False", None] else ""
-#    threads: 16
-#
-#    resources:
-#        mem_mb=128000,
-#        runtime=3600,
-#        disc_mb=100000
-#    shell:
-#        """
-#        rm -rf results/{wildcards.sample}
-#
-#        spaceranger count \
-#            --id={wildcards.sample} \
-#            --output-dir=results/{wildcards.sample} \
-#            --transcriptome={params.transcriptome} \
-#            --fastqs={input.fastqs} \
-#            --image={input.image} \
-#            --slide={params.slide} \
-#            --area={params.area} \
-#            --create-bam={params.create_bam} \
-#            {params.probeset}
-#        """
+rule spaceranger_count:
+    input:
+        fastqs = lambda wc: os.path.join(data_dir, f"{wc.sample}_fastqs"),
+        image  = lambda wc: os.path.join(data_dir, f"{wc.sample}_fastqs", f"{wc.sample}_image.tif")
+    output:
+        "results/{sample}/outs/filtered_feature_bc_matrix.h5"
+    params:
+        slide = lambda wc: SLIDE_DICT[wc.sample],
+        area  = lambda wc: AREA_DICT[wc.sample],
+        transcriptome= config["transcriptome"],
+        create_bam   = config["create_bam"],
+        probeset = lambda wc: f"--probe-set={config['probeset']}" if config.get("probeset") not in [False, "false", "False", None] else ""
+        cytaimage  = lambda wc: f"--cyta-image={data_dir}/{wc.sample}_fastqs/{wc.sample}_cytaimage.jpeg" if config.get("cytaimage") not in [False, "false", "False", None] else ""
+
+    threads: 16
+
+    resources:
+        mem_mb=128000,
+        runtime=3600,
+        disc_mb=100000
+    shell:
+        """
+        rm -rf results/{wildcards.sample}
+
+        spaceranger count \
+            --id={wildcards.sample} \
+            --output-dir=results/{wildcards.sample} \
+            --transcriptome={params.transcriptome} \
+            --fastqs={input.fastqs} \
+            --image={input.image} \
+            --cytaimage={params.cytaimage} \
+            --slide={params.slide} \
+            --area={params.area} \
+            --create-bam={params.create_bam} \
+            --nucleus-segmentation={params.nucleus_segmentation} \
+            {params.probeset}
+        """
 
 # Xenium CSV processing
 #rule xenium_process:
