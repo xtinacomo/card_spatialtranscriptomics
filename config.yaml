@@ -1,14 +1,20 @@
 #transcriptome 
 transcriptome: "/fdb/spaceranger/refdata-spaceranger-2020-A/refdata-gex-mm10-2020-A"
 
-#probeset, explicitly state the path or false without quotes if not using probeset
+#probeset, explicitly state the path or use false if not using probeset
 probeset: false
 
 #create bam
 create_bam: "false"
 
-#nuclear segemenation
-nuclear_segmentation: "false"
+#nuclear segemenation, for Visium HD, choose 
+nucleus_segmentation: "false"
+
+#for Visium HD, choose false or path to cytaimage
+cytaimage: "false"
+
+#Loupe alignment, only if manual alignment is neccesary. Choose false or path to manual coordinates
+loupealignment: "false"
 
 #following data from this link
 #https://www.10xgenomics.com/support/software/space-ranger/latest/tutorials/count-ff-tutorial
