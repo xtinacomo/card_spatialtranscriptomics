@@ -45,9 +45,10 @@ rule spaceranger_count:
         area  = lambda wc: AREA_DICT[wc.sample],
         transcriptome= config["transcriptome"],
         create_bam   = config["create_bam"],
+        nucleus_segmentation = lambda wc: f"--nucleus-segmentation={config['nucleus_segmentation']}" if config.get("nucleus_segmentation") not in [False, "false", "False", None] else "",
         probeset = lambda wc: f"--probe-set={config['probeset']}" if config.get("probeset") not in [False, "false", "False", None] else "",
         cytaimage  = lambda wc: f"--cyta-image={data_dir}/{wc.sample}_fastqs/{wc.sample}_cytaimage.jpeg" if config.get("cytaimage") not in [False, "false", "False", None] else "",
-        loupealignment = config["loupealignment"] if config.get("loupealignment") not in [False, "false", "False", None] else ""
+        loupealignment = lambda wc: f"--loupe-alignment={config['loupealignment']}" if config.get("loupealignment") not in [False, "false", None] else ""
 
     threads: 16
 
@@ -57,6 +58,7 @@ rule spaceranger_count:
         disc_mb=100000
     shell:
         """
+        module load spaceranger
         rm -rf results/{wildcards.sample}
 
         spaceranger count \
@@ -68,26 +70,15 @@ rule spaceranger_count:
             --slide={params.slide} \
             --area={params.area} \
             --create-bam={params.create_bam} \
-            --nucleus-segmentation={params.nucleus_segmentation} \
+            {params.nucleus_segmentation} \
             {params.loupealignment} \
             {params.probeset} \
             {params.cytaimage}
         """
 
-# Xenium CSV processing
-#rule xenium_process:
-#    input:
-#        matrix = lambda wildcards: os.path.join(data_dir, wildcards.sample, "cell_feature_matrix.csv")
-#    output:
-#        processed = "results/{sample}/xenium_processed.tsv"
-#    shell:
-#        """
-#        awk -F',' 'BEGIN{{OFS="\\t"}} NR==1{{print $0}} NR>1{{print $0}}' {input.matrix} > {output.processed}
-#        """
-
 rule seurat_process:
     input:
-        matrix = "results/seurat/{sample}/outs/"
+        "results/{sample}/outs/filtered_feature_bc_matrix.h5"
     output:
         rds = "results/seurat/{sample}/seurat.rds",
         violin = "results/seurat/{sample}/qc_violin.pdf",
