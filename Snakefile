@@ -33,6 +33,15 @@ rule all:
         expand("results/seurat/{sample}/seurat.rds", sample=SAMPLES),
         expand("results/seurat/{sample}/spatial_plot.pdf", sample=SAMPLES)
 
+def get_seurat_input(wildcards):
+    platform = PLATFORM_DICT[wildcards.sample].lower()
+    if platform == "visium":
+        return f"results/{wildcards.sample}/outs/filtered_feature_bc_matrix.h5"
+    elif platform == "xenium":
+        return f"data/{wildcards.sample}/cell_feature_matrix.h5"
+    else:
+        raise ValueError(f"Unknown platform '{platform}' for sample {wildcards.sample}")
+
 # SpaceRanger count for Visium
 rule spaceranger_count:
     input:
@@ -78,7 +87,7 @@ rule spaceranger_count:
 
 rule seurat_process:
     input:
-        "results/{sample}/outs/filtered_feature_bc_matrix.h5"
+        matrix = get_seurat_input
     output:
         rds = "results/seurat/{sample}/seurat.rds",
         violin = "results/seurat/{sample}/qc_violin.pdf",
