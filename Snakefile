@@ -45,8 +45,8 @@ rule spaceranger_count:
         area  = lambda wc: AREA_DICT[wc.sample],
         transcriptome= config["transcriptome"],
         create_bam   = config["create_bam"],
-        probeset = lambda wc: f"--probe-set={config['probeset']}" if config.get("probeset") not in [False, "false", "False", None] else ""
-        cytaimage  = lambda wc: f"--cyta-image={data_dir}/{wc.sample}_fastqs/{wc.sample}_cytaimage.jpeg" if config.get("cytaimage") not in [False, "false", "False", None] else ""
+        probeset = lambda wc: f"--probe-set={config['probeset']}" if config.get("probeset") not in [False, "false", "False", None] else "",
+        cytaimage  = lambda wc: f"--cyta-image={data_dir}/{wc.sample}_fastqs/{wc.sample}_cytaimage.jpeg" if config.get("cytaimage") not in [False, "false", "False", None] else "",
         loupealignment = config["loupealignment"] if config.get("loupealignment") not in [False, "false", "False", None] else ""
 
     threads: 16
@@ -87,7 +87,7 @@ rule spaceranger_count:
 
 rule seurat_process:
     input:
-        matrix = "results/{sample}/outs/"
+        matrix = "results/seurat/{sample}/outs/"
     output:
         rds = "results/seurat/{sample}/seurat.rds",
         violin = "results/seurat/{sample}/qc_violin.pdf",
