@@ -2,7 +2,6 @@
 ## Pipeline
 A Snakemake-based spatial transcriptomics workflow for processing and analyzing 10x Genomics **Visium** and **Xenium** data. The repository is organized to support preprocessing outputs from Space Ranger / Xenium-style inputs and downstream analysis in **Seurat**. At present, the active workflow centers on per-sample Seurat object generation and QC/visualization outputs.
 
-This pipeline follows the example tutorial of this data set: https://www.10xgenomics.com/support/software/space-ranger/latest/tutorials/count-ff-tutorial
 
 ### Running the Pipeline
 1. Clone this repository and move into the directory: 
